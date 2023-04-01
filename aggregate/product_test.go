@@ -20,7 +20,7 @@ func TestProduct_NewProduct(t *testing.T) {
 			test:        "should return error if name is empty",
 			name:        "",
 			description: " ",
-			price: 0.0,
+			price:       0.0,
 			expectedErr: aggregate.ErrMissingValues,
 		}, {
 			test:        "values are all Valid",
