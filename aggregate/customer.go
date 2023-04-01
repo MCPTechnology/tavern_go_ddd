@@ -1,4 +1,6 @@
-// Package aggregate holds our aggregates that combines many instances into a full object
+// Package aggregate
+// File: product.go
+// Customer is an aggregate represents a customer
 package aggregate
 
 import (
