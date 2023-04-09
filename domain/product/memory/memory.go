@@ -14,7 +14,7 @@ type MemoryProductRepository struct {
 	sync.Mutex
 }
 
-// New is a factory function to generate a new repository of customers
+// New is a factory function to generate a new repository for products
 func New() *MemoryProductRepository {
 	return &MemoryProductRepository{
 		products: make(map[uuid.UUID]aggregate.Product),
