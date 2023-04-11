@@ -1,26 +1,27 @@
-package services
+package order
 
 import (
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/matheuscaputopires/ddd-go/aggregate"
+	"github.com/matheuscaputopires/tavern/domain/customer"
+	"github.com/matheuscaputopires/tavern/domain/product"
 )
 
-func init_products(t *testing.T) []aggregate.Product {
-	beer, err := aggregate.NewProduct("Beer", "Beverage", 1.99)
+func init_products(t *testing.T) []product.Product {
+	beer, err := product.NewProduct("Beer", "Beverage", 1.99)
 	if err != nil {
 		t.Error(err)
 	}
-	peanuts, err := aggregate.NewProduct("Peanuts", "Snack", 0.99)
+	peanuts, err := product.NewProduct("Peanuts", "Snack", 0.99)
 	if err != nil {
 		t.Error(err)
 	}
-	wine, err := aggregate.NewProduct("Wine", "Drink", 5.99)
+	wine, err := product.NewProduct("Wine", "Drink", 5.99)
 	if err != nil {
 		t.Error(err)
 	}
-	products := []aggregate.Product{beer, peanuts, wine}
+	products := []product.Product{beer, peanuts, wine}
 	return products
 }
 
@@ -38,7 +39,7 @@ func TestOrder_NewOrderService(t *testing.T) {
 	}
 
 	// Add a Customer
-	cust, err := aggregate.NewCustomer("TestCustomer")
+	cust, err := customer.NewCustomer("TestCustomer")
 	if err != nil {
 		t.Error(err)
 	}

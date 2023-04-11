@@ -1,4 +1,4 @@
-module github.com/matheuscaputopires/ddd-go
+module github.com/matheuscaputopires/tavern
 
 go 1.20
 

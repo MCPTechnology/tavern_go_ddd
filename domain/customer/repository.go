@@ -1,3 +1,5 @@
+// Package customer
+// File: repository.go
 // Package Customer holds all the domain logic for the customer domain
 package customer
 
@@ -5,7 +7,6 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
-	"github.com/matheuscaputopires/ddd-go/aggregate"
 )
 
 var (
@@ -14,10 +15,10 @@ var (
 	ErrUpdateCustomer = errors.New("Unable to update the customer in the repository.")
 )
 
-// CustomerRepository is an interface that defines the rules arount what a cusromer repository
+// Repository is an interface that defines the rules arount what a cusromer repository
 // has to be able to perform
-type CustomerRepository interface{
-	Get(uuid.UUID) (aggregate.Customer, error)
-	Add(aggregate.Customer) error
-	Update(aggregate.Customer) error
+type Repository interface{
+	Get(uuid.UUID) (Customer, error)
+	Add(Customer) error
+	Update(Customer) error
 }

@@ -1,0 +1,219 @@
+{
+    // Place your snippets for go here. Each snippet is defined under a snippet name and has a prefix, body and 
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+    // same ids are connected.
+    // Example:
+    // "Create a function": {
+    // 	"prefix": "funcgo",
+    // 	"body": [
+    // 		"func $1($2) $3 {",
+    // 		"    $4",
+    // 		"}"
+    // 	],
+    // 	"description": "Creates a method such as:\n 'func functionName (parameter paramType) respType { <Content> } "
+    // },
+    "Create a struct function": {
+        "prefix": "funcstruct",
+        "body": [
+            "func (${1:internalStructName} ${2:struct}) ${3:methodName}(${4:parameters}) ${5:returnType} {",
+            "    $6",
+            "}\n$7"
+        ],
+        "description": "Creates a method such as:\n 'func functionName (parameter paramType) respType { <Content> } "
+    },
+    "Replace or by ||": {
+        "prefix": "or",
+        "body": "||"
+    },
+    "Replace and by &&": {
+        "prefix": "and",
+        "body": "&&"
+    },
+    "No error conditional": {
+        "prefix": "iferr",
+        "body": [
+            "if ${1:;}err != nil {",
+            "    log.Fatal(err)",
+            "    $2",
+            "}\n$3"
+        ]
+    },
+    "Test no error conditional": {
+        "prefix": "iftesterr",
+        "body": [
+            "if ${1}err != nil {",
+            "    t.Error(err)",
+            "}\n$2"
+        ]
+    },
+    "Return error if error": {
+        "prefix": [
+            "errreturn",
+            "ifreturn",
+            "iferrreturn",
+            "returnerror"
+        ],
+        "body": [
+            "if err != nil {",
+            "    return ${1:nil, }err",
+            "}\n$2"
+        ]
+    },
+    "Create a struct": {
+        "prefix": "struct_go",
+        "body": [
+            "type $1 struct {",
+            "    $2",
+            "}\n$3"
+        ],
+        "description": "Creates a sctuct such as:\n 'type structName struct { <Content> } "
+    },
+    "Iterable range": {
+        "prefix": "in",
+        "body": "${1:_}, $2 := range $3 ",
+        "description": "Ranges through an iterable"
+    },
+    "Range looping": {
+        "prefix": "forrange",
+        "body": [
+            "for ${1:_}, $2 := range $3 {",
+            "    $4",
+            "}\n$5"
+        ],
+        "description": "Creates a range for loop"
+    },
+    "Two dimensional Range Looping": {
+        "prefix": "forrange2d",
+        "body": [
+            "for ${1:_}, $2 := range $3 {",
+            "    for ${4:_}, $5 := range $2 {",
+            "        ${6:fmt.Printf(\"Line: %d | Column: %d | Value: %v\", $1, $4, $5\n)}",
+            "    }",
+            "}\n$7"
+        ],
+        "description": "Creates a 2 dimensional range for loop"
+    },
+    "Print line to terminal": {
+        "prefix": [
+            "print",
+            "pl"
+        ],
+        "body": "fmt.Println(${1:\"Text\"})"
+    },
+    "Print formatted line to terminal": {
+        "prefix": [
+            "printf",
+            "plf"
+        ],
+        "body": [
+            "fmt.Printf(\"${1:",
+            "    // %c   : Character",
+            "    // %d   : Integer",
+            "    // %f   : Float",
+            "    // %.2f : Float with 2 decimal places",
+            "    // %9f  : Float with at most 9 characters",
+            "    // %t   : Boolean",
+            "    // %s   : String",
+            "    // %o   : Base8",
+            "    // %x   : Base16",
+            "    // %v   : Guesses based on data type",
+            "    // %T   : Type of supplied value",
+            "    %s %d %c %f %.3f %t %o %x %v,",
+            "     \"Stuff\", 1, 'A', 3.141592, 3.141592, true, 1, 1, 2.1)}\\n\",$2)",
+        ],
+        "description": "Add a formatted line to terminal"
+    },
+    "String format": {
+        "prefix": "strformat",
+        "body": [
+            "${1:varName} := fmt.Sprintf(\"${2:",
+            "    // %c   : Character",
+            "    // %d   : Integer",
+            "    // %f   : Float",
+            "    // %.2f : Float with 2 decimal places",
+            "    // %9f  : Float with at most 9 characters",
+            "    // %t   : Boolean",
+            "    // %s   : String",
+            "    // %o   : Base8",
+            "    // %x   : Base16",
+            "    // %v   : Guesses based on data type",
+            "    // %T   : Type of supplied value",
+            "    %s %d %c %f %.3f %t %o %x %v,",
+            "     \"Stuff\", 1, 'A', 3.141592, 3.141592, true, 1, 1, 2.1)}\\n\",$3)",
+        ],
+        "description": "Formats a string and stores it into a variable"
+    },
+    "Create a Slice": {
+        "prefix": "slice",
+        "body": "${1:varName} := make([]${2:dataType},${3:length},${4:capacity})",
+        "description": "Slices are dynamically-sized, flexible view into the elements of an array"
+    },
+    "Create a Map": {
+        "prefix": "map",
+        "body": "${1:varName} := make(map[${2:keyType}]${3:valueType})$4"
+    },
+    "Create a Struct": {
+        "prefix": [
+            "struct",
+            "class"
+        ],
+        "body": [
+            "type ${1:structName} struct {",
+            "    $2",
+            "}\n$3"
+        ]
+    },
+    "Create an Interface": {
+        "prefix": "interface",
+        "body": [
+            "type ${1:interfaceName} interface{",
+            "    $2",
+            "}\n$3"
+        ]
+    },
+    "Create Test Method with Test Case": {
+        "prefix": "Test",
+        "body": [
+            "func Test${1:Interface}_${2:Test}(t *testing.T) {",
+            "    type testCase struct {",
+            "        name string",
+            "        expectedErr error",
+            "        ${3:variables variable_types}",
+            "    }\n",
+            "    testCases := []testCase{",
+            "        {",
+            "            name: \"${4:Positive Test}\",",
+            "            expectedErr: nil,",
+            "            ${3:variables variable_types},",
+            "        },",
+            "        {",
+            "            name: \"${5:Negative Test}\",",
+            "            expectedErr: ${6:ExpectedError},",
+            "            ${3:variables variable_types},",
+            "        },",
+            "    }",
+            "    for _, tc := range testCases {",
+            "        t.Run(tc.name, func(t *testing.T) {",
+            "            ${7:Test scenario}",
+            "            if err != tc.expectedErr {",
+            "                t.Errorf(\"Expected error %v, got %v\", tc.expectedErr, err)",
+            "            }",
+            "        })",
+            "    }",
+            "}\n$8"
+        ]
+    },
+    "Create a Test Function": {
+        "prefix": "functest",
+        "body": [
+            "func Test${1:Interface}_${2:Test}(t *testing.T) {",
+            "    $3",
+            "}\n$4"
+        ]
+    },
+    "Declare a list of something": {
+        "prefix": "list",
+        "body": ":= []${1:uuid.UUID}"
+    }
+}

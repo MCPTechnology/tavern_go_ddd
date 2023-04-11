@@ -1,4 +1,5 @@
-package valueobject
+// Package tavern holds all the entities that are shared across packages
+package tavern
 
 import (
 	"time"

@@ -42,3 +42,7 @@ setup:
 
 get_dependencies:
 	go mod tidy
+
+run:
+	cd cmd
+	go run main.go

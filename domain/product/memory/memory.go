@@ -5,27 +5,26 @@ import (
 	"sync"
 
 	"github.com/google/uuid"
-	"github.com/matheuscaputopires/ddd-go/aggregate"
-	"github.com/matheuscaputopires/ddd-go/domain/product"
+	"github.com/matheuscaputopires/tavern/domain/product"
 )
 
 type MemoryProductRepository struct {
-	products map[uuid.UUID]aggregate.Product
+	products map[uuid.UUID]product.Product
 	sync.Mutex
 }
 
 // New is a factory function to generate a new repository for products
 func New() *MemoryProductRepository {
 	return &MemoryProductRepository{
-		products: make(map[uuid.UUID]aggregate.Product),
+		products: make(map[uuid.UUID]product.Product),
 	}
 }
 
 // GetAll returns all products as a slice
 // This will not retuns an error but a database implementation might
-func (mpr *MemoryProductRepository) GetAll() ([]aggregate.Product, error) {
+func (mpr *MemoryProductRepository) GetAll() ([]product.Product, error) {
 	// Collects all products from map
-	var products []aggregate.Product
+	var products []product.Product
 	for _, product := range mpr.products {
 		products = append(products, product)
 	}
@@ -33,15 +32,15 @@ func (mpr *MemoryProductRepository) GetAll() ([]aggregate.Product, error) {
 }
 
 // GetByID searches for a product based on it's ID
-func (mpr *MemoryProductRepository) GetByID(id uuid.UUID) (aggregate.Product, error) {
+func (mpr *MemoryProductRepository) GetByID(id uuid.UUID) (product.Product, error) {
 	if product, ok := mpr.products[uuid.UUID(id)]; ok {
 		return product, nil
 	}
-	return aggregate.Product{}, product.ErrProductNotFound
+	return product.Product{}, product.ErrProductNotFound
 }
 
 // Add will Add a new product to the repository
-func (mpr *MemoryProductRepository) Add(newProduct aggregate.Product) error {
+func (mpr *MemoryProductRepository) Add(newProduct product.Product) error {
 	mpr.Lock()
 	defer mpr.Unlock()
 
@@ -54,7 +53,7 @@ func (mpr *MemoryProductRepository) Add(newProduct aggregate.Product) error {
 }
 
 // Update will change all values for a product based on it's ID
-func (mpr *MemoryProductRepository) Update(upprod aggregate.Product) error {
+func (mpr *MemoryProductRepository) Update(upprod product.Product) error {
 	mpr.Lock()
 	defer mpr.Unlock()
 

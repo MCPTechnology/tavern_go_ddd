@@ -4,13 +4,12 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/matheuscaputopires/ddd-go/aggregate"
-	"github.com/matheuscaputopires/ddd-go/domain/product"
+	"github.com/matheuscaputopires/tavern/domain/product"
 )
 
 func TestMemoryProductRepository_Add(t *testing.T) {
 	repo := New()
-	product, err := aggregate.NewProduct("Beer", "Good for your social life", 1.99)
+	product, err := product.NewProduct("Beer", "Good for your social life", 1.99)
 	if err != nil {
 		t.Error(err)
 	}
@@ -23,31 +22,31 @@ func TestMemoryProductRepository_Add(t *testing.T) {
 
 func TestMemoryProductRepository_Get(t *testing.T) {
 	repo := New()
-	existingProduct, err := aggregate.NewProduct("Beer", "Good for your social life", 1.99)
+	existingProduct, err := product.NewProduct("Beer", "Good for your social life", 1.99)
 	if err != nil {
 		t.Error(err)
 	}
-	
+
 	repo.Add(existingProduct)
 	if len(repo.products) != 1 {
 		t.Errorf("Expected 1 product, got %d", len(repo.products))
 	}
 
 	type testCase struct {
-		name string
+		name        string
 		expectedErr error
-		id uuid.UUID
+		id          uuid.UUID
 	}
 
 	testCases := []testCase{
 		{
-			name: "Successfully retrieves a Product",
+			name:        "Successfully retrieves a Product",
 			expectedErr: nil,
-			id: existingProduct.GetID(),
+			id:          existingProduct.GetID(),
 		}, {
-			name: "Non existing product",
+			name:        "Non existing product",
 			expectedErr: product.ErrProductNotFound,
-			id: uuid.New(),
+			id:          uuid.New(),
 		},
 	}
 	for _, tc := range testCases {
@@ -62,7 +61,7 @@ func TestMemoryProductRepository_Get(t *testing.T) {
 
 func TestMemoryProductRepository_Delete(t *testing.T) {
 	repo := New()
-	existingProd, err := aggregate.NewProduct("Beer", "Good for your health", 1.99)
+	existingProd, err := product.NewProduct("Beer", "Good for your health", 1.99)
 	if err != nil {
 		t.Error(err)
 	}

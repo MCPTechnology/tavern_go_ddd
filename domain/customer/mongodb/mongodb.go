@@ -6,14 +6,14 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/matheuscaputopires/ddd-go/aggregate"
+	"github.com/matheuscaputopires/tavern/domain/customer"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type MongodbRepository struct {
-	db       *mongo.Database
+	db *mongo.Database
 	// Customer is used to store customers
 	customer *mongo.Collection
 }
@@ -24,15 +24,15 @@ type mongoCustomer struct {
 	Name string    `bson:"name"`
 }
 
-func NewFromCustomer(c aggregate.Customer) mongoCustomer {
+func NewFromCustomer(c customer.Customer) mongoCustomer {
 	return mongoCustomer{
 		ID:   c.GetID(),
 		Name: c.GetName(),
 	}
 }
 
-func (m mongoCustomer) ToAggregate() aggregate.Customer {
-	c := aggregate.Customer{}
+func (m mongoCustomer) ToAggregate() customer.Customer {
+	c := customer.Customer{}
 	c.SetID(m.ID)
 	c.SetName(m.Name)
 	return c
@@ -54,7 +54,7 @@ func New(ctx context.Context, connectionString string) (*MongodbRepository, erro
 	}, nil
 }
 
-func (mr *MongodbRepository) Get(id uuid.UUID) (aggregate.Customer, error) {
+func (mr *MongodbRepository) Get(id uuid.UUID) (customer.Customer, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -62,13 +62,13 @@ func (mr *MongodbRepository) Get(id uuid.UUID) (aggregate.Customer, error) {
 
 	var c mongoCustomer
 	if err := result.Decode(&c); err != nil {
-		return aggregate.Customer{}, err
+		return customer.Customer{}, err
 	}
-	// Convert to aggregate
+	// Convert to customer
 	return c.ToAggregate(), nil
 }
 
-func (mr *MongodbRepository) Add(c aggregate.Customer) error {
+func (mr *MongodbRepository) Add(c customer.Customer) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -80,6 +80,6 @@ func (mr *MongodbRepository) Add(c aggregate.Customer) error {
 	return nil
 }
 
-func (mr *MongodbRepository) Update(c aggregate.Customer) error {
+func (mr *MongodbRepository) Update(c customer.Customer) error {
 	panic("to implement")
 }

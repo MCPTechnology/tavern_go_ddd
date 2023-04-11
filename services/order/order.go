@@ -1,17 +1,17 @@
 // Package services holds all the services that connects repositories into a business flow
-package services
+package order
 
 import (
 	"context"
 	"log"
 
 	"github.com/google/uuid"
-	"github.com/matheuscaputopires/ddd-go/aggregate"
-	"github.com/matheuscaputopires/ddd-go/domain/customer"
-	customerMemoryRepository "github.com/matheuscaputopires/ddd-go/domain/customer/memory"
-	customerMongoDBRepository "github.com/matheuscaputopires/ddd-go/domain/customer/mongodb"
-	productDomain "github.com/matheuscaputopires/ddd-go/domain/product"
-	productMemoryRepository "github.com/matheuscaputopires/ddd-go/domain/product/memory"
+	"github.com/matheuscaputopires/tavern/domain/customer"
+	customerMemoryRepository "github.com/matheuscaputopires/tavern/domain/customer/memory"
+	customerMongoDBRepository "github.com/matheuscaputopires/tavern/domain/customer/mongodb"
+	"github.com/matheuscaputopires/tavern/domain/product"
+	productDomain "github.com/matheuscaputopires/tavern/domain/product"
+	productMemoryRepository "github.com/matheuscaputopires/tavern/domain/product/memory"
 )
 
 // OrderConfiguration is an alias for a function that will take in a pointer to an OrderService and modify it
@@ -19,8 +19,8 @@ type OrderConfiguration func(os *OrderService) error
 
 // OrderService is a implementation of the OrderService
 type OrderService struct {
-	customer customer.CustomerRepository
-	products productDomain.ProductRepository
+	customer customer.Repository
+	products productDomain.Repository
 }
 
 // NewOrderService takes a variable amount of OrderConfiguration functions and returns a new OrderService
@@ -40,7 +40,7 @@ func NewOrderService(cfgs ...OrderConfiguration) (*OrderService, error) {
 }
 
 // WithCustomerRepository applies a given customer repository to the OrderService
-func WithCustomerRepository(customer customer.CustomerRepository) OrderConfiguration {
+func WithCustomerRepository(customer customer.Repository) OrderConfiguration {
 	// return a function that matches the OrderConfiguration alias,
 	// This is done so that the parent function can take in all the needed parameters
 	return func(os *OrderService) error {
@@ -70,7 +70,7 @@ func WithMongoCustomerRepository(ctx context.Context, connectionString string) O
 }
 
 // WithMemoryProductRepository adds an in memory product repo and adds all input products to it
-func WithMemoryProductRepository(products []aggregate.Product) OrderConfiguration {
+func WithMemoryProductRepository(products []product.Product) OrderConfiguration {
 	return func(os *OrderService) error {
 		// Create the memory repo, if parameters are needed such as connection strings, this is where it should be
 		productRepo := productMemoryRepository.New()
@@ -94,7 +94,7 @@ func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID)
 		return 0, err
 	}
 
-	var products []aggregate.Product
+	var products []product.Product
 	var price float64
 	for _, productID := range productIDs {
 		product, err := o.products.GetByID(productID)
@@ -110,4 +110,18 @@ func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID)
 	log.Printf("Customer %s has ordered %d products", customer.GetID(), len(products))
 
 	return price, nil
+}
+
+func (os *OrderService) AddCustomer(name string) (uuid.UUID, error) {
+	customer, err := customer.NewCustomer(name)
+	if err != nil {
+		return uuid.Nil, err
+	}
+	
+	err = os.customer.Add(customer)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	return customer.GetID(), nil
 }
